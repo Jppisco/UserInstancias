@@ -1,0 +1,17 @@
+<div class="header">
+  <div class="header__title">
+    <span>Admin</span>
+    <h2>Gluky users</h2>
+  </div>
+  <div class="user">
+    <h4 class="user__mail">{{correo}}</h4><br>
+    <div class="user2">
+      <br><h4 class="user__mail" *ngIf="rol==='administrador'">Admin</h4>
+      <br><h4 class="user__mail"*ngIf="rol==='usuario'">User</h4>
+    </div>
+   
+
+    <div class="user__avatares"><img class="user__avatar" src="../../../assets/profile_picture.png" alt="imagen" />
+    </div>
+  </div>
+</div>

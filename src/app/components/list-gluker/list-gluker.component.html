@@ -1,0 +1,97 @@
+<div class="container">
+  <app-sidebar></app-sidebar>
+  <div class="content">
+    <app-header></app-header>
+    <div class="tableWrapper">
+      <h3 class="table__title">{{titulo}}</h3>
+      <div class="tableContainer">
+        <div class="table">
+          <h5 *ngIf="userInfoList.length == 0" style="margin-top: 30px;">No hay datos</h5>
+          <div class="table__options">
+            <div class="options__buttons">
+              <div class="file-input">
+                <label for="file" class="file-input__label" [(ngModel)]="inputData">
+                <i [(ngModel)]="inputData" class="fas fa-download"></i>
+                </label>
+                <input id="file" class="file-input__input" type="file" (change)="ReadExcel($event)" [(ngModel)]="inputData">
+              </div>
+              <button class="option__button" routerLink="/create-G" title="Añadir"><i class="fas fa-plus"></i>
+              </button>
+              <button class="option__button"  (click)="exportToExcel()" *ngIf="userInfoList.length > 0"
+                title="Exportat a Excel"><i class="fas fa-file-excel"></i> &nbsp; <span class="option__text">Exportar a
+                  Excel</span></button>
+            </div>
+          </div>
+          <div class="table__content">
+            <div class="table__scroll">
+              <table class="table__data" *ngIf="userInfoList.length > 0">
+                <thead class="table__head">
+                  <tr class="table__row">
+                    <th class="table__header">Email</th>
+                    <th class="table__header">Rol</th>
+                    <th class="table__header">Creación</th>
+                    <th class="table__header">Actualización</th>
+                    <th class="table__header table__header--options"></th>
+                    <th class="table__header table__header--options"></th>
+                  </tr>
+                </thead>
+                <tbody class="table__body">
+                  <tr class=" table__row" *ngFor="let userInfo of currentPageItems">
+                    <td class="table__cell">{{userInfo.email}}</td>
+                    <td class="table__cell">{{userInfo.rol}}</td>
+                    <td class="table__cell">{{userInfo.fechaCreacion | date}}</td>
+                    <td class="table__cell">{{userInfo.fechaActualizacion | date}}</td>
+                    <td class="table_cell table__cell--options" title="Editar">
+                      <i class="fas fa-edit fa-lg" [routerLink]="['/edit-G/',userInfo.id]"></i>
+                    </td>
+                    <td class="table_cell table__cell--options" title="Eliminar">
+                      <i (click)="deleteUserInfo(userInfo.id)" class="fas fa-trash-alt fa-lg"></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="table__footer" *ngIf="userInfoList.length > 0 && totalPages()>1" >
+            <button class="footer__btn" (click)="previousPage()" [disabled]="currentPage === 1" title="Anterior">
+              <i class="fas fa-chevron-left"></i> &nbsp; <span class="footer__text">Anterior</span>
+            </button>
+            <span class="paginationText">{{currentPage}}</span>
+            <button class="footer__btn"  (click)="nextPage()" [disabled]="currentPage === totalPages()"
+              title="Siguiente">
+              <span class="footer__text">Siguiente</span> &nbsp;
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="table__content2">
+  <div class="table__scroll">
+    <table class="table__data" id="tabla-exportar" *ngIf="userInfoList.length > 0">
+      <thead class="table__head">
+        <tr class="table__row">
+          <th class="table__header">Email</th>
+          <th class="table__header">Rol</th>
+          <th class="table__header">Creación</th>
+          <th class="table__header">Actualización</th>
+          <th class="table__header"></th>
+          <th class="table__header"></th>
+        </tr>
+      </thead>
+      <tbody class="table__body" *ngFor="let userInfo of userInfoList">
+        <tr class=" table__row">
+          <td class="table__cell">{{userInfo.email}}</td>
+          <td class="table__cell">{{userInfo.rol}}</td>
+          <td class="table__cell">{{userInfo.fechaActualizacion | date}}</td>
+          <td class="table__cell">{{userInfo.fechaCreacion | date}}</td>
+          <td class="table__cell"></td>
+          <td class="table__cell"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

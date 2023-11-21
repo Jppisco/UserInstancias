@@ -1,0 +1,74 @@
+<!-- <div class="container"> -->
+  <!-- <div class="sidebar">
+    <div class="logo">
+
+  </div>
+    <ul class="list">
+      <li class="list__item list__item--active">
+        <a class="list__link" routerLink="/list-I">
+          <i class="fas fa-home"></i>
+          <span class="list__text">Instancias</span>
+        </a>
+      </li>
+      <li class="list__item">
+        <a class="list__link" routerLink="/list-P">
+          <i class="fas fa-tasks"></i>
+          <span class="list__text">Programas</span>
+        </a>
+      </li>
+      <li class="list__item">
+        <a class="list__link" routerLink="/list-U">
+          <i class="fas fa-users"></i>
+          <span class="list__text">Usuarios</span>
+        </a>
+      </li>
+      <li class="list__item list__item--logOut">
+        <a class="list__link">
+          <i class="fas fa-sign-out-alt"></i>
+          <span class="list__text" (click)="logOut()">Cerrar sesión</span>
+        </a>
+      </li>
+    </ul>
+  </div> -->
+
+
+  <div class="container">
+    <div class="sidebar">
+        <div class="logo"></div>
+        <ul class="list">
+          <li class="list__item list__item--active">
+            <a class="list__link" routerLink="/list-I">
+              <i class="fas fa-home"></i>
+              <span class="list__text">Instancias</span>
+            </a>
+          </li>
+          <li class="list__item">
+            <a class="list__link" routerLink="/list-P">
+              <i class="fas fa-tasks"></i>
+              <span class="list__text">Programas</span>
+            </a>
+          </li>
+          <li class="list__item">
+            <a class="list__link" routerLink="/list-U">
+              <i class="fas fa-users"></i>
+              <span class="list__text">Usuarios</span>
+            </a>
+          </li>
+          <li  class="list__item" *ngIf="rol === 'administrador'">
+            <a class="list__link" routerLink="/list-G">
+              <i class="fas fa-user-lock"></i>
+              <span class="list__text">Ingreso</span>
+            </a>
+          </li>
+          <li  class="list__item list__item--logOut">
+            <a class="list__link" (click)="logOut()">
+              <i class="fas fa-sign-out-alt"></i>
+              <span class="list__text">Salir</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+</div>
+
+
+

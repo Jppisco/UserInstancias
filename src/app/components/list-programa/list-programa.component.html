@@ -1,0 +1,133 @@
+<div class="container">
+  <app-sidebar></app-sidebar>
+  <div class="content">
+    <app-header></app-header>
+    <div class="tableWrapper">
+      <h3 class="table__title">{{titulo}}</h3>
+      <div class="tableContainer">
+        <div class="table">
+          <h5 *ngIf="programa.length == 0" style="margin-top: 30px;">No hay datos</h5>
+          <div class="table__options">
+            <div class="options__filter">
+              <label class="filter__label filter__label--1" for="date-start">Desde:</label>
+              <input class="filter__date filter__date--start" type="date" id="date-start" name="incio"
+                [(ngModel)]="fechaInicio" title="Fecha Inicial" placeholder="Fecha Inicial">
+              <label class="filter__label filter__label--2" for="date-end">Hasta:</label>
+              <input class="filter__date filter__date--end" type="date" id="date-end" name="fin" [(ngModel)]="fechaFin"
+                title="Fecha Final" placeholder="Fecha Final">
+              <button title="Limpiar filtro" class="filter__button" (click)="limpiarInput()"><i
+                  class="fas fa-window-close"></i></button>
+              <button *ngIf="id_instancia!==null" title="Buscar" class="filter__button" (click)="fechas()"><i class="fas fa-search"></i></button>
+              <button *ngIf="id_instancia==null" title="Buscar" class="filter__button" (click)="fechasSinId()"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="options__buttons">
+              <div class="file-input" *ngIf="id_instancia==null">
+                <label for="file" class="file-input__label">
+                  <i [(ngModel)]="inputDatos" class="fas fa-download"></i>
+                </label>
+                <input id="file" class="file-input__input" type="file" (change)="ReadExcel($event)" [(ngModel)]="inputDatos">
+              </div>
+              <button  *ngIf="id_instancia!==null" class="option__button" [routerLink]="['/create-P/',id_instancia]" title="Añadir"><i
+                  class="fas fa-plus"></i> </button>
+              <button class="option__button" (click)="exportToExcel()" *ngIf="programa.length > 0"
+                title="Exportat a Excel"><i class="fas fa-file-excel"></i> &nbsp; <span class="option__text">Exportar a
+                  Excel</span></button>
+              <button  *ngIf="id_instancia!==null" class="option__button option__button--back" routerLink="/list-I" title="Volver"><i
+                  class="fas fa-chevron-left"></i> &nbsp; <span class="option__text">Volver</span></button>
+            </div>
+          </div>
+          <div class="table__content">
+            <div class="table__scroll">
+              <table class="table__data" *ngIf="programa.length > 0">
+                <thead class="table__head">
+                  <tr class="table__row">
+                    <th class="table__header">Instancia</th>
+                    <th class="table__header">ID</th>
+                    <th class="table__header">Nombre</th>
+                    <th class="table__header">País</th>
+                    <th class="table__header">Creación</th>
+                    <th class="table__header">Actualización</th>
+                    <th  class="table__header"></th>
+                    <th  *ngIf="id_instancia!==null" class="table__header"></th>
+                  </tr>
+                </thead>
+                <tbody class="table__body" *ngFor="let programas of currentPageItems">
+                  <tr class=" table__row">
+                    <td class="table__cell">{{programas.id_instancia}}</td>
+                    <td class="table__cell">{{programas.id_programa}}</td>
+                    <td class="table__cell">{{programas.nombre}}</td>
+                    <td class="table__cell">{{programas.pais}}</td>
+                    <td class="table__cell">{{programas.fechaCreacion | date  }}</td>
+                    <td class="table__cell">{{programas.fechaActualizacion | date }}</td>
+                    <td *ngIf="id_instancia!==null" class="table_cell table__cell--options" title="Editar">
+                      <i *ngIf="id_instancia!==null"  class="fas fa-edit fa-lg"
+                        [routerLink]="['/edit-P/',programas.id,programas.id_instancia]"></i>
+                    </td>
+                    <td *ngIf="id_instancia==null"  class="table_cell table__cell--options" title="Editar">
+                      <i *ngIf="id_instancia==null"  class="fas fa-edit fa-lg"
+                        [routerLink]="['/edit-P/',programas.id]"></i>
+                    </td>
+                    <td  *ngIf="id_instancia!==null" class="table_cell table__cell--options" title="Lista de Usuarios">
+                      <i   *ngIf="id_instancia!==null"class="fas fa-users fa-lg icon"
+                        [routerLink]="['/list-U/',programas.id_programa,id_instancia]"></i>
+                    </td>
+
+                    <!-- <td><i (click)="eliminarPrograma(programas.id)" class="fas fa-trash-alt fa-lg"></i></td> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="table__footer" *ngIf="programa.length > 0  && totalPages() > 1">
+            <button class="footer__btn" (click)="previousPage()" [disabled]="currentPage === 1" title="Anterior">
+              <i class="fas fa-chevron-left"></i> &nbsp; <span class="footer__text">Anterior</span>
+            </button>
+            <span class="paginationText">{{currentPage}}</span>
+            <button class="footer__btn" (click)="nextPage()" [disabled]="currentPage === totalPages()"
+              title="Siguiente">
+              <span class="footer__text">Siguiente</span> &nbsp;
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="table__content2">
+  <div class="table__scroll">
+    <table class="table__data" id="tabla-exportar" *ngIf="programa.length > 0">
+      <thead class="table__head">
+        <tr class="table__row">
+          <th class="table__header">Instancia</th>
+          <th class="table__header">ID</th>
+          <th class="table__header">Nombre</th>
+          <th class="table__header">País</th>
+          <th class="table__header">Creación</th>
+          <th class="table__header">Actualización</th>
+          <th class="table__header"></th>
+          <th class="table__header"></th>
+        </tr>
+      </thead>
+      <tbody class="table__body" *ngFor="let programas of programa">
+        <tr class=" table__row">
+          <td class="table__cell">{{programas.id_instancia}}</td>
+          <td class="table__cell">{{programas.id_programa}}</td>
+          <td class="table__cell">{{programas.nombre}}</td>
+          <td class="table__cell">{{programas.pais}}</td>
+          <td class="table__cell">{{programas.fechaCreacion | date  }}</td>
+          <td class="table__cell">{{programas.fechaActualizacion | date }}</td>
+          <td class="table_cell table__cell--options">
+            <i class="fas fa-edit fa-lg" [routerLink]="['/edit-P/',programas.id,programas.id_instancia]"></i>
+          </td>
+          <td class="table_cell table__cell--options">
+            <i class="fas fa-users fa-lg icon" [routerLink]="['/list-U/',programas.id_programa,id_instancia]"></i>
+          </td>
+          <td><i (click)="eliminarPrograma(programas.id)" class="fas fa-trash-alt fa-lg"></i></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

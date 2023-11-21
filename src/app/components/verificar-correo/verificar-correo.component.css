@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.page__icon {
+    font-size: 8rem;
+    color: lightseagreen;
+}
+
+.page__text {
+    font-size: 2rem;
+    text-align: center;
+    margin: 2rem 2rem;
+}
+
+.page__button {
+    height: 40px;
+    width: 180px;
+    border: 2px solid black;
+    background-color: white;
+    font-weight: bold;
+    transition: 0.3s ease;
+    color: black;
+    cursor: pointer;
+}
+
+.page__button:hover {
+    border: 2px solid lightseagreen;
+    color: lightseagreen;
+    letter-spacing: 3px;
+}
